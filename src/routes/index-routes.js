@@ -71,7 +71,7 @@ router.get("/file", (req, res, next) => {
             headers: { "Content-Type": "multipart/form-data" },
             url: `${hostname}${pathSubmit}${token}`,
             form: {
-              answer: fs.createReadStream("../../src/routes/answer.json")
+              answer: fs.createReadStream(pathJson)
             }
           },
           (error, response, body) => {
