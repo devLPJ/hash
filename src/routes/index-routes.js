@@ -3,17 +3,21 @@ const fs = require("fs");
 const path = require("path");
 const request = require("request");
 const router = express.Router();
-
+const sha1 = require("sha1");
 function criptografa(teste, numCaracter) {
   var texto = [];
+  var numAux;
   var textoCriptografado = "";
   teste = teste.toLowerCase();
   for (i = 0; i < teste.length; i++) {
     if (teste.charCodeAt(i) >= 97 && teste.charCodeAt(i) <= 122) {
       if (teste.charCodeAt(i) + numCaracter > 122) {
-        numCaracter = teste.charCodeAt(i) + numCaracter - 122;
+        numAux = teste.charCodeAt(i) + numCaracter;
+        numAux = numAux - 122;
+        texto[i] = String.fromCharCode(96 + numAux);
+      } else {
+        texto[i] = String.fromCharCode(teste.charCodeAt(i) + numCaracter);
       }
-      texto[i] = String.fromCharCode(teste.charCodeAt(i) + numCaracter);
     } else {
       texto[i] = teste[i];
     }
@@ -42,8 +46,20 @@ router.get("/file", (req, res, next) => {
     }
     console.log("status:", response && response.statusCode);
     result = body;
-    console.log(result);
-    fs.writeFile(pathJson, result, err => {
+    teste = JSON.parse(body);
+    console.log(teste.numero_casas);
+    console.log(teste.cifrado);
+
+    var textoDescriptografado = criptografa(teste.cifrado, teste.numero_casas);
+    var textoGravar;
+    textoGravar = '{"numero_casas": ' + teste.numero_casas + ",";
+    textoGravar += '"token": "' + teste.token + '",';
+    textoGravar += '"cifrado": "' + teste.cifrado + '",';
+    textoGravar += '"decifrado": "' + textoDescriptografado + '",';
+    textoGravar +=
+      '"resumo_criptografico": "' + sha1(textoDescriptografado) + '"}';
+    console.log(textoDescriptografado);
+    fs.writeFile(pathJson, textoGravar, err => {
       if (err) {
         console.log(err);
       } else {
