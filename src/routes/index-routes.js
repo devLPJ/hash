@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
+  var teste = "help";
+
   res.status(200).send({
-    title: "MentionsAPI",
-    version: "1.0.0"
+    title: teste[0].charCodeAt() + 1
   });
 });
 
