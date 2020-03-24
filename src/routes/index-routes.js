@@ -66,19 +66,19 @@ router.get("/file", (req, res, next) => {
         console.log(err);
       } else {
         console.log("File was saved");
-        Request.post(
+        request.post(
           {
             headers: { "Content-Type": "multipart/form-data" },
             url: `${hostname}${pathSubmit}${token}`,
             form: {
-              answer: fs.readFileSync("./answer.json")
+              answer: fs.createReadStream("../../src/routes/answer.json")
             }
           },
           (error, response, body) => {
             if (error) {
               return console.dir(error);
             }
-            console.dir(JSON.parse(body));
+            console.log("sucesso");
           }
         );
       }
