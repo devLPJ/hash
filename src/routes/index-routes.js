@@ -40,6 +40,8 @@ router.get("/file", (req, res, next) => {
   const hostname = "https://api.codenation.dev/v1";
   const pathApi = "/challenge/dev-ps/generate-data?token=";
   const token = "0f30869d147d8ac6421c2b840863b2b036f1bb60";
+  const pathSubmit = "/challenge/dev-ps/submit-solution?token";
+
   request(`${hostname}${pathApi}${token}`, (error, response, body) => {
     if (error) {
       console.error("error:", error);
@@ -64,6 +66,21 @@ router.get("/file", (req, res, next) => {
         console.log(err);
       } else {
         console.log("File was saved");
+        Request.post(
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            url: `${hostname}${pathSubmit}${token}`,
+            form: {
+              answer: fs.readFileSync("./answer.json")
+            }
+          },
+          (error, response, body) => {
+            if (error) {
+              return console.dir(error);
+            }
+            console.dir(JSON.parse(body));
+          }
+        );
       }
     });
     res.status(200).send({
