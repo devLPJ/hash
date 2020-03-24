@@ -34,9 +34,9 @@ router.get("/file", (req, res, next) => {
   let pathJson = path.resolve(__dirname, "answer.json");
   var result;
   const hostname = "https://api.codenation.dev/v1";
-  const path = "/challenge/dev-ps/generate-data?token=";
+  const pathApi = "/challenge/dev-ps/generate-data?token=";
   const token = "0f30869d147d8ac6421c2b840863b2b036f1bb60";
-  request(`${hostname}${path}${token}`, (error, response, body) => {
+  request(`${hostname}${pathApi}${token}`, (error, response, body) => {
     if (error) {
       console.error("error:", error);
     }
