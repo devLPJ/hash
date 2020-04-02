@@ -11,12 +11,12 @@ function criptografa(teste, numCaracter) {
   teste = teste.toLowerCase();
   for (i = 0; i < teste.length; i++) {
     if (teste.charCodeAt(i) >= 97 && teste.charCodeAt(i) <= 122) {
-      if (teste.charCodeAt(i) + numCaracter > 122) {
-        numAux = teste.charCodeAt(i) + numCaracter;
-        numAux = numAux - 122;
-        texto[i] = String.fromCharCode(96 + numAux);
+      if (teste.charCodeAt(i) - numCaracter < 97) {
+        numAux = 97 - (teste.charCodeAt(i) - numCaracter);
+        numAux = 123 - numAux;
+        texto[i] = String.fromCharCode(numAux);
       } else {
-        texto[i] = String.fromCharCode(teste.charCodeAt(i) + numCaracter);
+        texto[i] = String.fromCharCode(teste.charCodeAt(i) - numCaracter);
       }
     } else {
       texto[i] = teste[i];
